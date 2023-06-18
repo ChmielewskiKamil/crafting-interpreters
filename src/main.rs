@@ -17,22 +17,21 @@ impl Args {
 }
 
 fn main() {
-    match Args::new() {
-        Ok(args) => {
-            if let Some(file_path) = args.file_path {
-                if let Ok(content) = read_file(&file_path) {
-                    run_lexical_analysis(&content);
-                } else {
-                    println!("Error reading file: {:?}", file_path);
-                }
-            } else {
-                run_prompt();
-            }
-        }
-        Err(err) => {
-            println!("Error: {}", err);
-        }
+    if let Err(e) = run() {
+        eprintln!("Error: {}", e);
+        std::process::exit(1);
     }
+}
+
+fn run() -> Result<(), Box<dyn Error>> {
+    let args = Args::new()?;
+    if let Some(file_path) = args.file_path {
+        let content = read_file(&file_path)?;
+        run_lexical_analysis(&content);
+    } else {
+        run_prompt();
+    }
+    Ok(())
 }
 
 fn read_file(file_path: &PathBuf) -> Result<String, Box<dyn Error>> {
