@@ -40,9 +40,9 @@ fn read_file(file_path: &PathBuf) -> Result<String, Box<dyn Error>> {
 }
 
 fn run_lexical_analysis(content: &str) {
-    println!("Performing lexical analysis on content: {}", content);
+    println!("Performing lexical analysis on content: \n{}", content);
 }
 
 fn run_prompt() {
-    println!("Running prompt");
+    println!("Running REPL");
 }
