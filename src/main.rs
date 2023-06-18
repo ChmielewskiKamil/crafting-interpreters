@@ -2,14 +2,14 @@ use clap::Parser;
 
 #[derive(Parser, Debug)]
 struct Args {
-    #[clap(short, long, help="Lox source file path")]
+    #[clap(short, long, help = "Lox source file path")]
     file_path: Option<String>,
 }
 
 impl Args {
     fn new() -> Result<Self, String> {
         let args = Self::parse();
-            Ok(args)
+        Ok(args)
     }
 }
 
