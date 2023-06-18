@@ -1,6 +1,7 @@
 use clap::Parser;
 use std::error::Error;
 use std::fs;
+use std::io::{self, BufRead};
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
@@ -26,8 +27,8 @@ fn main() {
 fn run() -> Result<(), Box<dyn Error>> {
     let args = Args::new()?;
     if let Some(file_path) = args.file_path {
-        let content = read_file(&file_path)?;
-        run_lexical_analysis(&content);
+        let source = read_file(&file_path)?;
+        run_lexical_analysis(&source);
     } else {
         run_prompt();
     }
@@ -35,14 +36,23 @@ fn run() -> Result<(), Box<dyn Error>> {
 }
 
 fn read_file(file_path: &PathBuf) -> Result<String, Box<dyn Error>> {
-    let content = fs::read_to_string(file_path)?;
-    Ok(content)
+    let source = fs::read_to_string(file_path)?;
+    Ok(source)
 }
 
-fn run_lexical_analysis(content: &str) {
-    println!("Performing lexical analysis on content: \n{}", content);
+fn run_lexical_analysis(source: &str) {
+    println!("Performing lexical analysis on source: \n{}", source);
 }
 
 fn run_prompt() {
     println!("Running REPL");
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        if let Ok(line) = line {
+            run_lexical_analysis(&line);
+        } else {
+            eprintln!("Error reading line");
+            break;
+        }
+    }
 }
