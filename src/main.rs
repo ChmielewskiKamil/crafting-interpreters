@@ -1,10 +1,10 @@
 use std::{
     env::args,
     fs::File,
-    io::{BufReader, Read},
+    io::{BufRead, BufReader, Read},
 };
 
-pub fn main() {
+pub fn main() -> Result<(), std::io::Error> {
     let args: Vec<String> = args().collect();
     if args.len() > 2 {
         println!("Too many arguments! Usage: lox-ast [script]");
@@ -12,10 +12,11 @@ pub fn main() {
     // If user passed in a path to a file
     else if args.len() == 2 {
         // In Rust args[0] is the name of the program
-        run_file(&args[1]).expect("Error running file");
+        run_file(&args[1])?;
     } else {
-        run_prompt();
+        run_prompt()?;
     }
+    Ok(())
 }
 
 fn run_file(path: &str) -> Result<(), std::io::Error> {
@@ -27,8 +28,13 @@ fn run_file(path: &str) -> Result<(), std::io::Error> {
     Ok(())
 }
 
-fn run_prompt() {
+fn run_prompt() -> Result<(), std::io::Error> {
     println!("Running prompt");
+    let stdin = std::io::stdin();
+    for line in stdin.lock().lines() {
+        println!("{}", line?)
+    }
+    Ok(())
 }
 
 fn run(source: &[u8]) {
