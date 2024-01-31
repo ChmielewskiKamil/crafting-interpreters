@@ -4,10 +4,62 @@ use std::{
     io::{BufRead, BufReader, Read},
 };
 
+#[allow(dead_code)]
+#[derive(Debug)]
+enum TokenType {
+    // Single character tokens
+    Plus,
+    Minus,
+    Slash,
+    Star,
+
+    // One or two character tokens
+    Equal,
+
+    // Literals
+    Number,
+    String,
+    Identifier,
+
+    // Keywords
+    Function,
+    True,
+    False,
+
+    EOF,
+}
+
+#[allow(dead_code)]
+#[derive(Debug)]
+struct Location {
+    // Offset from the beginning of the file to the beginning of the lexeme
+    offset: u32,
+    // Length of the lexeme
+    length: u32,
+}
+
+#[allow(dead_code)]
+#[derive(Debug)]
+struct Token {
+    token_type: TokenType,
+    lexeme: String,
+    location: Location,
+}
+
+#[allow(dead_code)]
+impl Token {
+    fn to_string(&self) -> String {
+        format!(
+            "Token: {:?}, Lexeme: {}, Location: {:?}",
+            self.token_type, self.lexeme, self.location
+        )
+    }
+}
+
 pub fn main() -> Result<(), std::io::Error> {
     let args: Vec<String> = args().collect();
     if args.len() > 2 {
-        println!("Too many arguments! Usage: lox-ast [script]");
+        println!("Too many arguments! Usage: sol-ast [path/to/file.sol]");
     }
     // If user passed in a path to a file
     else if args.len() == 2 {
@@ -38,5 +90,5 @@ fn run_prompt() -> Result<(), std::io::Error> {
 }
 
 fn run(source: &[u8]) {
-    println!("Running source");
+    println!("Bytes read from source file: {:?}", source);
 }
