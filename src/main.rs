@@ -6,8 +6,17 @@ use std::{
 
 mod token;
 
+struct Scanner {
+    source_file: Vec<u8>,
+    scanned_tokens: Vec<token::Token>,
+    current_char: usize,
+    current_line: usize,
+    current_lexeme_start: usize,
 }
 
+impl Scanner {
+    fn is_at_end(&self) -> bool {
+        self.current_char >= self.source_file.len()
     }
 }
 
