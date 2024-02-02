@@ -1,5 +1,5 @@
 #[derive(Debug)]
-enum TokenType {
+pub enum TokenType {
     // Single character tokens
     Plus,
     Minus,
@@ -23,18 +23,18 @@ enum TokenType {
 }
 
 #[derive(Debug)]
-struct Location {
+pub struct Location {
     // Offset from the beginning of the file to the beginning of the lexeme
-    offset: u32,
+    pub offset: usize,
     // Length of the lexeme
-    length: u32,
+    pub length: usize,
 }
 
 #[derive(Debug)]
 pub struct Token {
-    token_type: TokenType,
-    lexeme: String,
-    location: Location,
+    pub token_type: TokenType,
+    pub lexeme: String,
+    pub location: Location,
 }
 
 impl Token {
